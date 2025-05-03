@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phishing Detector</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 45%;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            font-weight: 700;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        select, textarea, input, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.3s ease;
+        }
+
+        select:focus, textarea:focus, input:focus {
+            border-color: #ff758c;
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            padding: 14px;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #ff6a88, #ff99ac);
+            transform: scale(1.05);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+
+    <script>
+        function toggleInput() {
+            const type = document.getElementById("checkType").value;
+            document.getElementById("emailSection").classList.add("hidden");
+            document.getElementById("urlSection").classList.add("hidden");
+
+            if (type === "email") {
+                document.getElementById("emailSection").classList.remove("hidden");
+            } else if (type === "url") {
+                document.getElementById("urlSection").classList.remove("hidden");
+            }
+        }
+
+        window.onload = function () {
+            toggleInput();
+            {% if result %}
+            alert("{{ result }}");
+            {% endif %}
+        };
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔍 Phishing Detector</h1>
+        <form method="POST">
+            <label for="checkType"><b>Select what to check:</b></label>
+            <select id="checkType" name="checkType" onchange="toggleInput()" required>
+                <option value="">-- Select --</option>
+                <option value="email" {% if checkType == 'email' %}selected{% endif %}>Email</option>
+                <option value="url" {% if checkType == 'url' %}selected{% endif %}>URL</option>
+            </select>
+
+            <div id="emailSection" class="hidden">
+                <h2>Email Check</h2>
+                <textarea name="email_text" placeholder="Paste email content here..." rows="4"></textarea>
+            </div>
+
+            <div id="urlSection" class="hidden">
+                <h2>URL Check</h2>
+                <input type="text" name="url" placeholder="Enter URL to check">
+            </div>
+
+            <button type="submit">Check</button>
+        </form>
+    </div>
+
+</body>
+</html>
